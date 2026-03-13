@@ -1,0 +1,14 @@
+schema_version = "1.0.0"
+id = "blendermcp_pro"
+version = "0.1.0"
+name = "BlenderMCP Pro"
+tagline = "MCP server for AI-driven 3D modeling in Blender"
+maintainer = "BlenderMCP Contributors"
+type = "add-on"
+blender_version_min = "4.2.0"
+
+# Blender 5.x compat
+platforms = ["windows-x64", "macos-arm64", "linux-x64", "macos-x64", "windows-arm64"]
+
+[permissions]
+network = "Listens on localhost TCP for MCP server connections"

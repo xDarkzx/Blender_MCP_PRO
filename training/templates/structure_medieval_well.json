@@ -1,0 +1,575 @@
+{
+  "meta": {
+    "name": "Medieval Stone Well",
+    "category": "structure",
+    "source": "BlenderKit",
+    "source_name": "Well",
+    "tags": ["well", "medieval", "stone", "wood", "outdoor", "prop", "game-ready"],
+    "complexity": "medium",
+    "total_objects": 14,
+    "total_vertices": 19358,
+    "total_faces": 17763,
+    "overall_dimensions": [2.163, 2.332, 2.750],
+    "description": "A medieval stone well with circular stone base, wooden shingled roof on tapered frame, rope spool mechanism with crank handle, and wooden lid cover."
+  },
+
+  "materials": [
+    {
+      "name": "Wall stone greece",
+      "role": "stone_wall",
+      "usage": ["base_wall"],
+      "type": "PBR_textured",
+      "color_hint": [0.6, 0.58, 0.52]
+    },
+    {
+      "name": "wood",
+      "role": "structural_wood",
+      "usage": ["roof_frame", "support_posts", "cross_beams", "lid", "roller", "wall_lip"],
+      "type": "PBR_textured",
+      "color_hint": [0.45, 0.30, 0.15]
+    },
+    {
+      "name": "Old raw wood PBR texture seamless",
+      "role": "weathered_wood",
+      "usage": ["roof_shingles", "cross_beams_alt", "crank_handles"],
+      "type": "PBR_textured",
+      "color_hint": [0.35, 0.25, 0.12]
+    },
+    {
+      "name": "Procedural Dirty Metal",
+      "role": "metal_hardware",
+      "usage": ["metal_bar", "bracket", "crank_axle"],
+      "type": "procedural",
+      "color_hint": [0.3, 0.3, 0.3],
+      "metallic": 0.8
+    },
+    {
+      "name": "rope",
+      "role": "rope",
+      "usage": ["rope_spool"],
+      "type": "PBR_textured",
+      "color_hint": [0.55, 0.45, 0.30]
+    },
+    {
+      "name": "metal",
+      "role": "metal_detail",
+      "usage": ["crank_knob"],
+      "type": "PBR_textured",
+      "metallic": 0.9
+    }
+  ],
+
+  "parts": [
+    {
+      "id": "base_wall",
+      "original_name": "Circle",
+      "role": "Circular stone wall base - the main cylindrical body of the well",
+      "primitive_base": "CYLINDER",
+      "material": "Wall stone greece",
+      "geometry": {
+        "vertices": 528,
+        "edges": 1056,
+        "faces": 528,
+        "loose_parts": 1
+      },
+      "dimensions": {
+        "radius": 0.75,
+        "height": 0.801,
+        "width_x": 1.500,
+        "width_y": 1.500
+      },
+      "position": {
+        "center": [0.0, 0.0, 0.4],
+        "z_min": 0.0,
+        "z_max": 0.801
+      },
+      "profile": {
+        "type": "cylinder_with_bands",
+        "description": "Uniform radius 0.75 with slight inset at top and bottom edges (r=0.675). Regular vertex rings every ~0.1 units suggest loop cuts for stone block detail.",
+        "radius_at_base": 0.675,
+        "radius_at_body": 0.75,
+        "radius_at_top": 0.675,
+        "ring_spacing": 0.08
+      },
+      "symmetry": {"x": true, "y": true},
+      "modifiers": ["SUBSURF", "AUTO_SMOOTH"],
+      "construction_notes": "Start with cylinder (r=0.75, depth=0.8, 48 verts). Add loop cuts every 0.08 for stone block rows. Apply subdivision for smooth curvature. Stone texture handles visual detail."
+    },
+
+    {
+      "id": "wall_lip",
+      "original_name": "Circle.001",
+      "role": "Flared stone/wood lip at top of wall - decorative molding",
+      "primitive_base": "CYLINDER",
+      "material": "wood",
+      "geometry": {
+        "vertices": 160,
+        "edges": 304,
+        "faces": 152,
+        "loose_parts": 4
+      },
+      "dimensions": {
+        "radius_bottom": 0.806,
+        "radius_top": 0.982,
+        "height": 0.556,
+        "width_x": 1.706
+      },
+      "position": {
+        "center": [0.0, 0.0, 1.559],
+        "z_min": 1.281,
+        "z_max": 1.837
+      },
+      "profile": {
+        "type": "flared_cylinder",
+        "description": "Starts narrow at bottom (r=0.806) and flares outward to top (r=0.982). 4 loose parts suggest segmented construction. Sits on top of base wall.",
+        "radius_progression": [0.806, 0.808, 0.810, 0.830, 0.833, 0.854, 0.884, 0.953]
+      },
+      "symmetry": {"x": true, "y": true},
+      "modifiers": ["BEVEL", "WEIGHTED_NORMAL"],
+      "construction_notes": "Cylinder base, extrude top face upward in steps while scaling outward. 4 parts = possibly 4 quarter-circle segments. Bevel edges for clean look."
+    },
+
+    {
+      "id": "lid_planks",
+      "original_name": "Circle.003",
+      "role": "Wooden plank lid covering the well opening",
+      "primitive_base": "CUSTOM_FLAT",
+      "material": "wood",
+      "geometry": {
+        "vertices": 94,
+        "edges": 122,
+        "faces": 39,
+        "loose_parts": 11
+      },
+      "dimensions": {
+        "width_x": 1.503,
+        "width_y": 1.630,
+        "height": 0.0
+      },
+      "position": {
+        "center": [0.0, 0.0, 0.800],
+        "z_min": 0.800,
+        "z_max": 0.800
+      },
+      "profile": {
+        "type": "flat_planks",
+        "description": "11 separate flat plank shapes arranged in a circle to form a lid. Each plank is a simple quad/polygon. Solidify modifier gives thickness."
+      },
+      "symmetry": {"x": false, "y": false},
+      "modifiers": ["SOLIDIFY", "BEVEL", "WEIGHTED_NORMAL"],
+      "construction_notes": "Create 11 individual thin rectangular planes arranged radially to cover the circular opening. Solidify gives 3D thickness. Each plank slightly different width for realism."
+    },
+
+    {
+      "id": "lid_details",
+      "original_name": "Circle.004",
+      "role": "Small wood detail pieces on lid surface",
+      "primitive_base": "CUSTOM_FLAT",
+      "material": "wood",
+      "geometry": {
+        "vertices": 20,
+        "edges": 20,
+        "faces": 5,
+        "loose_parts": 5
+      },
+      "dimensions": {
+        "width_x": 0.918,
+        "width_y": 0.804,
+        "height": 0.031
+      },
+      "position": {
+        "center": [0.253, -0.029, 0.846],
+        "z_min": 0.831,
+        "z_max": 0.862
+      },
+      "profile": {
+        "type": "small_flat_pieces",
+        "description": "5 small pieces sitting on top of the lid planks. Cross-braces or reinforcement strips."
+      },
+      "modifiers": ["SOLIDIFY", "BEVEL"],
+      "construction_notes": "5 thin rectangular strips placed across lid planks as cross-bracing. Solidify for thickness."
+    },
+
+    {
+      "id": "roof_frame",
+      "original_name": "Cube.001",
+      "role": "Tapered wooden frame forming the roof skeleton",
+      "primitive_base": "CUSTOM_BEAMS",
+      "material": "wood",
+      "geometry": {
+        "vertices": 168,
+        "edges": 280,
+        "faces": 140,
+        "loose_parts": 14
+      },
+      "dimensions": {
+        "width_x": 1.706,
+        "width_y": 2.176,
+        "height": 0.852
+      },
+      "position": {
+        "center": [0.0, 0.0, 2.223],
+        "z_min": 1.797,
+        "z_max": 2.649
+      },
+      "profile": {
+        "type": "tapered_frame",
+        "description": "14 separate beam pieces forming a pyramidal/tapered frame. Wide at base (r=1.268) narrowing to top (r=0.576). Perfect XY symmetry. 14 parts = rafters radiating from peak.",
+        "radius_at_base": 1.268,
+        "radius_at_top": 0.576,
+        "taper_ratio": 0.454
+      },
+      "symmetry": {"x": true, "y": true},
+      "modifiers": ["AUTO_SMOOTH"],
+      "construction_notes": "14 individual beam objects (thin cuboids) arranged radially, tilted inward from base ring to a narrower top ring. Like tent/teepee frame rafters."
+    },
+
+    {
+      "id": "cross_beams",
+      "original_name": "Cube.002",
+      "role": "Horizontal cross beams at top and bottom of roof frame",
+      "primitive_base": "CUSTOM_BEAMS",
+      "material": "Old raw wood PBR texture seamless",
+      "geometry": {
+        "vertices": 88,
+        "edges": 124,
+        "faces": 52,
+        "loose_parts": 12
+      },
+      "dimensions": {
+        "width_x": 1.759,
+        "width_y": 2.332,
+        "height": 1.010
+      },
+      "position": {
+        "center": [0.0, 0.0, 2.245],
+        "z_min": 1.740,
+        "z_max": 2.750
+      },
+      "profile": {
+        "type": "ring_beams",
+        "description": "12 beam pieces forming two horizontal rings - one at base of roof (Z=1.74-1.84, r=1.39-1.44) and one at top ridge (Z=2.60-2.75, r=0.84-0.87). Connect the rafters together.",
+        "bottom_ring_radius": 1.436,
+        "top_ring_radius": 0.870
+      },
+      "symmetry": {"x": true, "y": true},
+      "modifiers": ["BEVEL", "AUTO_SMOOTH"],
+      "construction_notes": "Two rings of 6 beams each. Bottom ring wider, top ring narrower. Each beam is a thin cuboid following the circular perimeter."
+    },
+
+    {
+      "id": "support_posts",
+      "original_name": "Cube.003",
+      "role": "Vertical wooden support posts from ground to roof",
+      "primitive_base": "CUSTOM_BEAMS",
+      "material": "wood",
+      "geometry": {
+        "vertices": 184,
+        "edges": 332,
+        "faces": 160,
+        "loose_parts": 8
+      },
+      "dimensions": {
+        "width_x": 1.707,
+        "width_y": 2.142,
+        "height": 2.627
+      },
+      "position": {
+        "center": [0.0, 0.0, 1.314],
+        "z_min": 0.0,
+        "z_max": 2.627
+      },
+      "profile": {
+        "type": "vertical_posts",
+        "description": "8 vertical posts running from ground (Z=0) up to roof height (Z=2.63). Vertices clustered at base and top connections. Posts at r~0.805 from center. Wider section at top (Z=1.84, r=1.04) where roof frame connects.",
+        "post_radius_from_center": 0.805
+      },
+      "symmetry": {"x": true, "y": true},
+      "modifiers": ["BEVEL", "AUTO_SMOOTH"],
+      "construction_notes": "8 vertical cuboid posts arranged in a circle (r=0.85) around the well. Each post ~0.15x0.15 cross section, 2.6m tall. Wider bracket where roof connects at top."
+    },
+
+    {
+      "id": "roof_shingles",
+      "original_name": "Cube.076",
+      "role": "Individual roof shingle/plank pieces covering the frame",
+      "primitive_base": "CUSTOM_PLANKS",
+      "material": "Old raw wood PBR texture seamless",
+      "geometry": {
+        "vertices": 1036,
+        "edges": 1576,
+        "faces": 788,
+        "loose_parts": 124
+      },
+      "dimensions": {
+        "width_x": 1.717,
+        "width_y": 2.202,
+        "height": 0.875
+      },
+      "position": {
+        "center": [0.002, 0.0, 2.258],
+        "z_min": 1.820,
+        "z_max": 2.696
+      },
+      "profile": {
+        "type": "tapered_shingle_covering",
+        "description": "124 individual thin plank/shingle pieces laid over the roof frame. Tapers from wide base (W_y=2.20 at Z=1.82) to narrow peak (W_y=0.02 at Z=2.70). Each shingle ~8 verts/6 faces. Arranged in rows following the taper of the frame.",
+        "rows_estimated": 15,
+        "shingles_per_row_avg": 8,
+        "shingle_size_approx": [0.12, 0.15, 0.01]
+      },
+      "symmetry": {"x": false, "y": false},
+      "modifiers": ["BEVEL", "WEIGHTED_NORMAL"],
+      "construction_notes": "124 small thin rectangular planes arranged in overlapping rows over the roof frame. Each shingle slightly offset and rotated for organic look. Lower rows wider and more numerous, upper rows fewer. Bevel on edges for thickness appearance."
+    },
+
+    {
+      "id": "crank_axle",
+      "original_name": "Cylinder",
+      "role": "Main crank axle assembly with handles - spans between posts",
+      "primitive_base": "CYLINDER",
+      "material": ["Procedural Dirty Metal", "Old raw wood PBR texture seamless"],
+      "geometry": {
+        "vertices": 2126,
+        "edges": 4211,
+        "faces": 2087,
+        "loose_parts": 3
+      },
+      "dimensions": {
+        "width_x": 2.163,
+        "height": 0.417,
+        "depth": 0.116
+      },
+      "position": {
+        "center": [0.077, -0.010, 1.292],
+        "z_min": 1.083,
+        "z_max": 1.501
+      },
+      "profile": {
+        "type": "axle_with_handles",
+        "description": "3 parts: central thin axle shaft (r~0.005, metal), and two crank handles at each end (r~1.08, mixed materials). Shaft extends full width 2.16m between support posts. Handle sections have wood material.",
+        "shaft_radius": 0.005,
+        "handle_reach": 1.082
+      },
+      "modifiers": [],
+      "construction_notes": "Central thin cylinder for shaft. Two L-shaped crank handles at ends made from thicker cylinders. Metal material on shaft, wood on handle grips."
+    },
+
+    {
+      "id": "metal_bar",
+      "original_name": "Cylinder.001",
+      "role": "Horizontal metal support bar between posts",
+      "primitive_base": "CYLINDER",
+      "material": "Procedural Dirty Metal",
+      "geometry": {
+        "vertices": 528,
+        "edges": 1040,
+        "faces": 520,
+        "loose_parts": 4
+      },
+      "dimensions": {
+        "radius": 0.04,
+        "length": 1.723,
+        "height": 0.080
+      },
+      "position": {
+        "center": [0.0, 0.0, 1.481],
+        "z_min": 1.441,
+        "z_max": 1.521
+      },
+      "profile": {
+        "type": "horizontal_bar",
+        "description": "4 metal bar segments running horizontally. Uniform radius ~0.04. Spans 1.72m between posts. At Z=1.48 (just above wall lip level)."
+      },
+      "symmetry": {"x": false, "y": false},
+      "modifiers": ["BEVEL", "WEIGHTED_NORMAL"],
+      "construction_notes": "4 thin cylinders (r=0.04) arranged horizontally forming a cross or rectangle between support posts. Bevel for smooth metal look."
+    },
+
+    {
+      "id": "crank_knob",
+      "original_name": "Cylinder.002",
+      "role": "Crank handle knob/grip detail",
+      "primitive_base": "CYLINDER",
+      "material": "metal",
+      "geometry": {
+        "vertices": 3520,
+        "edges": 6996,
+        "faces": 3480,
+        "loose_parts": 4
+      },
+      "dimensions": {
+        "width": 0.321,
+        "depth": 0.327,
+        "height": 0.355
+      },
+      "position": {
+        "center": [-0.393, -0.421, 1.008],
+        "z_min": 0.830,
+        "z_max": 1.186
+      },
+      "profile": {
+        "type": "knob_detail",
+        "description": "4 small detailed metal pieces forming the crank grip knob. High poly (3.5K faces for small detail) suggests turned/lathed shape. Off-center position = attached to crank handle end."
+      },
+      "modifiers": ["AUTO_SMOOTH"],
+      "construction_notes": "Small detailed metal cylinder with profile details. Could be simplified for game-ready version. Position at crank handle endpoint."
+    },
+
+    {
+      "id": "rope_spool",
+      "original_name": "Cylinder.006",
+      "role": "Rope wound around central drum/spool",
+      "primitive_base": "TORUS_VARIANT",
+      "material": "rope",
+      "geometry": {
+        "vertices": 12048,
+        "edges": 24084,
+        "faces": 12036,
+        "loose_parts": 1
+      },
+      "dimensions": {
+        "width": 0.527,
+        "depth": 0.364,
+        "height": 0.409
+      },
+      "position": {
+        "center": [-0.146, -0.090, 1.368],
+        "z_min": 1.163,
+        "z_max": 1.573
+      },
+      "profile": {
+        "type": "wound_rope",
+        "description": "Single continuous mesh of rope wound around a spool. Narrows to thin line in middle (r=0.006 at Z=1.37) - this is the rope going down into the well. Bulges at top and bottom where rope is coiled around the drum (r=0.17-0.27). Very high poly (12K faces) for rope detail.",
+        "coil_radius_top": 0.175,
+        "coil_radius_bottom": 0.259,
+        "rope_line_radius": 0.006
+      },
+      "modifiers": [],
+      "construction_notes": "Complex mesh - best created with curve-based rope along helical path, or simplified as cylinder with texture. The thin middle section is the hanging rope line."
+    },
+
+    {
+      "id": "roller_drum",
+      "original_name": "Cylinder.007",
+      "role": "Wooden roller drum that rope winds around",
+      "primitive_base": "CYLINDER",
+      "material": "wood",
+      "geometry": {
+        "vertices": 96,
+        "edges": 160,
+        "faces": 66,
+        "loose_parts": 1
+      },
+      "dimensions": {
+        "radius": 0.083,
+        "length": 1.273,
+        "height": 0.166
+      },
+      "position": {
+        "center": [0.012, 0.0, 1.481],
+        "z_min": 1.398,
+        "z_max": 1.564
+      },
+      "profile": {
+        "type": "barrel_cylinder",
+        "description": "Slight barrel shape - wider in middle (r=0.083) than ends (r=0.033). Perfect XY symmetry. Single continuous mesh. This is the drum the rope wraps around.",
+        "radius_center": 0.083,
+        "radius_ends": 0.033
+      },
+      "symmetry": {"x": true, "y": true},
+      "modifiers": ["AUTO_SMOOTH"],
+      "construction_notes": "Simple cylinder with barrel profile. Start cylinder (r=0.083, depth=1.27, 32 verts), scale end faces inward to r=0.033 for barrel shape."
+    },
+
+    {
+      "id": "metal_bracket",
+      "original_name": "Plane.003",
+      "role": "Metal bracket/mounting plate on support post",
+      "primitive_base": "PLANE",
+      "material": "Procedural Dirty Metal",
+      "geometry": {
+        "vertices": 528,
+        "edges": 1016,
+        "faces": 500,
+        "loose_parts": 6
+      },
+      "dimensions": {
+        "width": 0.517,
+        "depth": 0.477,
+        "height": 0.043
+      },
+      "position": {
+        "center": [0.250, -0.037, 0.912],
+        "z_min": 0.891,
+        "z_max": 0.933
+      },
+      "profile": {
+        "type": "flat_bracket",
+        "description": "6 flat metal pieces forming bracket/mounting hardware. Very thin (4.3cm). Sits at Z=0.91 where the lid meets the wall top. Subdivision modifier for smooth curves."
+      },
+      "modifiers": ["SUBSURF"],
+      "construction_notes": "Flat metal plates. Start with planes, shape to bracket profile, apply subdivision for smooth edges."
+    }
+  ],
+
+  "spatial_relationships": [
+    {"from": "base_wall", "to": "wall_lip", "relation": "wall_lip sits on top of base_wall", "connection": "top_surface"},
+    {"from": "base_wall", "to": "lid_planks", "relation": "lid_planks cover the top opening of base_wall", "connection": "inside_top"},
+    {"from": "lid_planks", "to": "lid_details", "relation": "lid_details sit on top of lid_planks as cross-bracing", "connection": "on_surface"},
+    {"from": "support_posts", "to": "base_wall", "relation": "support_posts stand around base_wall from ground to roof", "connection": "surrounding"},
+    {"from": "support_posts", "to": "roof_frame", "relation": "roof_frame sits on top of support_posts", "connection": "top_connection"},
+    {"from": "roof_frame", "to": "cross_beams", "relation": "cross_beams connect roof_frame rafters horizontally", "connection": "ring_connection"},
+    {"from": "roof_frame", "to": "roof_shingles", "relation": "roof_shingles lay over roof_frame surface", "connection": "covering"},
+    {"from": "support_posts", "to": "roller_drum", "relation": "roller_drum spans horizontally between two support_posts", "connection": "between_posts"},
+    {"from": "roller_drum", "to": "rope_spool", "relation": "rope_spool wraps around roller_drum", "connection": "around"},
+    {"from": "support_posts", "to": "crank_axle", "relation": "crank_axle passes through support_posts at roller height", "connection": "through"},
+    {"from": "crank_axle", "to": "crank_knob", "relation": "crank_knob attaches to end of crank_axle", "connection": "end_attachment"},
+    {"from": "support_posts", "to": "metal_bar", "relation": "metal_bar spans between support_posts horizontally", "connection": "between_posts"},
+    {"from": "wall_lip", "to": "metal_bracket", "relation": "metal_bracket mounts at wall_lip level", "connection": "mounted_on"}
+  ],
+
+  "construction_order": [
+    "1. base_wall - Foundation cylinder, the main well body",
+    "2. wall_lip - Flared top molding on the wall",
+    "3. lid_planks - Wooden plank cover over the opening",
+    "4. lid_details - Cross-brace strips on the lid",
+    "5. support_posts - 8 vertical posts from ground up",
+    "6. metal_bar - Horizontal metal bars between posts",
+    "7. metal_bracket - Mounting hardware at wall level",
+    "8. roller_drum - Wooden drum between posts",
+    "9. crank_axle - Crank mechanism through posts",
+    "10. crank_knob - Handle grip detail on crank",
+    "11. rope_spool - Rope wound around drum",
+    "12. roof_frame - Tapered rafter beams",
+    "13. cross_beams - Horizontal rings connecting rafters",
+    "14. roof_shingles - Individual plank/shingle covering"
+  ],
+
+  "techniques": {
+    "loose_parts_as_planks": {
+      "description": "Individual loose mesh islands within one object to represent planks, shingles, or segmented pieces",
+      "used_by": ["lid_planks(11)", "roof_shingles(124)", "lid_details(5)", "cross_beams(12)", "roof_frame(14)", "support_posts(8)"]
+    },
+    "solidify_for_thickness": {
+      "description": "Solidify modifier on flat planes to create thin 3D objects (planks, brackets)",
+      "used_by": ["lid_planks", "lid_details"]
+    },
+    "bevel_weighted_normal": {
+      "description": "Bevel modifier + WeightedNormal for clean hard-surface edges on wood/metal",
+      "used_by": ["wall_lip", "lid_planks", "metal_bar", "roof_shingles"]
+    },
+    "tapered_profile": {
+      "description": "Objects that narrow from bottom to top (pyramidal roof)",
+      "used_by": ["roof_frame", "roof_shingles"]
+    },
+    "radial_arrangement": {
+      "description": "Parts arranged in a circle around the center axis",
+      "used_by": ["support_posts", "roof_frame", "cross_beams", "lid_planks"]
+    },
+    "multi_material": {
+      "description": "Single object with multiple materials for different sections",
+      "used_by": ["crank_axle"]
+    }
+  }
+}

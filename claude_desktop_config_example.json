@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "blendermcp": {
+      "command": "python",
+      "args": ["-m", "server.main"],
+      "cwd": "D:\\DansProject\\BlenderMCP"
+    }
+  }
+}

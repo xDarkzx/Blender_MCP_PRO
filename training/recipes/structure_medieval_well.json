@@ -1,0 +1,597 @@
+{
+  "meta": {
+    "name": "Medieval Stone Well",
+    "template": "structure_medieval_well.json",
+    "prompt": "Build a medieval stone well with a wooden shingled roof, rope and crank mechanism, and stone circular base.",
+    "prompt_variants": [
+      "Create a well like you'd see in a medieval village",
+      "Make an old stone well with a wooden roof and bucket rope",
+      "Build a wishing well with shingled roof and crank handle"
+    ],
+    "estimated_steps": 45
+  },
+
+  "steps": [
+    {
+      "step": 1,
+      "action": "mesh_create_primitive",
+      "description": "Create the stone wall base cylinder",
+      "params": {
+        "type": "CYLINDER",
+        "name": "WellBase",
+        "vertices": 48,
+        "radius": 0.75,
+        "depth": 0.80,
+        "location": [0, 0, 0.4]
+      },
+      "expected": {"vertex_count_approx": 98, "face_count_approx": 50}
+    },
+    {
+      "step": 2,
+      "action": "material_create",
+      "description": "Create stone material for the wall",
+      "params": {
+        "name": "Stone",
+        "base_color": [0.6, 0.58, 0.52, 1.0],
+        "roughness": 0.85,
+        "metallic": 0.0
+      }
+    },
+    {
+      "step": 3,
+      "action": "material_assign",
+      "description": "Apply stone material to well base",
+      "params": {
+        "object_name": "WellBase",
+        "material_name": "Stone"
+      }
+    },
+    {
+      "step": 4,
+      "action": "mesh_edit_geometry",
+      "description": "Add loop cuts to base for stone block rows",
+      "params": {
+        "object_name": "WellBase",
+        "steps": [
+          {"operation": "LOOP_CUT", "cuts": 8, "edge_index": 0},
+          {"operation": "INSET", "selection": {"type": "face", "position": "top"}, "thickness": 0.05},
+          {"operation": "INSET", "selection": {"type": "face", "position": "bottom"}, "thickness": 0.05}
+        ]
+      },
+      "notes": "Loop cuts create horizontal rings for stone block texture detail. Inset at top/bottom creates the slight edge inset seen in reference (r=0.675 vs 0.75)."
+    },
+    {
+      "step": 5,
+      "action": "modifier_add",
+      "description": "Add subdivision for smooth stone curvature",
+      "params": {
+        "object_name": "WellBase",
+        "type": "SUBSURF",
+        "properties": {"levels": 1, "render_levels": 2}
+      }
+    },
+    {
+      "step": 6,
+      "action": "mesh_set_smooth_shading",
+      "description": "Smooth shade the stone wall",
+      "params": {
+        "object_name": "WellBase",
+        "smooth": true,
+        "auto_smooth_angle": 30
+      }
+    },
+
+    {
+      "step": 7,
+      "action": "mesh_create_primitive",
+      "description": "Create the flared wall lip/molding on top",
+      "params": {
+        "type": "CYLINDER",
+        "name": "WallLip",
+        "vertices": 48,
+        "radius": 0.81,
+        "depth": 0.12,
+        "location": [0, 0, 1.30]
+      }
+    },
+    {
+      "step": 8,
+      "action": "mesh_edit_geometry",
+      "description": "Extrude and flare the wall lip upward",
+      "params": {
+        "object_name": "WallLip",
+        "steps": [
+          {"operation": "EXTRUDE", "selection": {"type": "face", "position": "top"}, "direction": [0, 0, 0.1]},
+          {"operation": "SCALE", "selection": {"type": "face", "position": "top"}, "scale_vector": [1.05, 1.05, 1]},
+          {"operation": "EXTRUDE", "selection": {"type": "face", "position": "top"}, "direction": [0, 0, 0.1]},
+          {"operation": "SCALE", "selection": {"type": "face", "position": "top"}, "scale_vector": [1.08, 1.08, 1]},
+          {"operation": "EXTRUDE", "selection": {"type": "face", "position": "top"}, "direction": [0, 0, 0.1]},
+          {"operation": "SCALE", "selection": {"type": "face", "position": "top"}, "scale_vector": [1.12, 1.12, 1]},
+          {"operation": "EXTRUDE", "selection": {"type": "face", "position": "top"}, "direction": [0, 0, 0.12]},
+          {"operation": "SCALE", "selection": {"type": "face", "position": "top"}, "scale_vector": [1.15, 1.15, 1]}
+        ]
+      },
+      "notes": "Progressive extrude+scale creates flared profile matching reference (r=0.806 -> 0.982)"
+    },
+    {
+      "step": 9,
+      "action": "material_create",
+      "description": "Create wood material",
+      "params": {
+        "name": "Wood",
+        "base_color": [0.45, 0.30, 0.15, 1.0],
+        "roughness": 0.75,
+        "metallic": 0.0
+      }
+    },
+    {
+      "step": 10,
+      "action": "material_assign",
+      "params": {
+        "object_name": "WallLip",
+        "material_name": "Wood"
+      }
+    },
+    {
+      "step": 11,
+      "action": "modifier_add",
+      "description": "Bevel edges on wall lip for clean look",
+      "params": {
+        "object_name": "WallLip",
+        "type": "BEVEL",
+        "properties": {"width": 0.01, "segments": 2}
+      }
+    },
+
+    {
+      "step": 12,
+      "action": "mesh_create_custom",
+      "description": "Create wooden lid from individual planks",
+      "params": {
+        "name": "WellLid",
+        "vertices": [
+          [-0.70, -0.65, 0.80], [0.70, -0.65, 0.80], [0.70, -0.50, 0.80], [-0.70, -0.50, 0.80],
+          [-0.70, -0.45, 0.80], [0.70, -0.45, 0.80], [0.70, -0.30, 0.80], [-0.70, -0.30, 0.80],
+          [-0.65, -0.25, 0.80], [0.65, -0.25, 0.80], [0.65, -0.10, 0.80], [-0.65, -0.10, 0.80],
+          [-0.60, -0.05, 0.80], [0.60, -0.05, 0.80], [0.60, 0.10, 0.80], [-0.60, 0.10, 0.80],
+          [-0.55, 0.15, 0.80], [0.55, 0.15, 0.80], [0.55, 0.30, 0.80], [-0.55, 0.30, 0.80],
+          [-0.50, 0.35, 0.80], [0.50, 0.35, 0.80], [0.50, 0.48, 0.80], [-0.50, 0.48, 0.80],
+          [-0.40, 0.52, 0.80], [0.40, 0.52, 0.80], [0.40, 0.63, 0.80], [-0.40, 0.63, 0.80]
+        ],
+        "faces": [
+          [0,1,2,3], [4,5,6,7], [8,9,10,11], [12,13,14,15],
+          [16,17,18,19], [20,21,22,23], [24,25,26,27]
+        ]
+      },
+      "notes": "7 separate planks as loose parts. Wider at bottom, narrower at top to approximate circular coverage."
+    },
+    {
+      "step": 13,
+      "action": "modifier_add",
+      "description": "Solidify lid planks for thickness",
+      "params": {
+        "object_name": "WellLid",
+        "type": "SOLIDIFY",
+        "properties": {"thickness": 0.03}
+      }
+    },
+    {
+      "step": 14,
+      "action": "modifier_add",
+      "description": "Bevel lid plank edges",
+      "params": {
+        "object_name": "WellLid",
+        "type": "BEVEL",
+        "properties": {"width": 0.005, "segments": 1}
+      }
+    },
+    {
+      "step": 15,
+      "action": "material_assign",
+      "params": {
+        "object_name": "WellLid",
+        "material_name": "Wood"
+      }
+    },
+
+    {
+      "step": 16,
+      "action": "mesh_create_custom",
+      "description": "Create 4 support posts as vertical beams",
+      "params": {
+        "name": "SupportPosts",
+        "vertices": [
+          [-0.86, -0.08, 0.0], [-0.76, -0.08, 0.0], [-0.76, 0.08, 0.0], [-0.86, 0.08, 0.0],
+          [-0.86, -0.08, 2.60], [-0.76, -0.08, 2.60], [-0.76, 0.08, 2.60], [-0.86, 0.08, 2.60],
+
+          [0.76, -0.08, 0.0], [0.86, -0.08, 0.0], [0.86, 0.08, 0.0], [0.76, 0.08, 0.0],
+          [0.76, -0.08, 2.60], [0.86, -0.08, 2.60], [0.86, 0.08, 2.60], [0.76, 0.08, 2.60],
+
+          [-0.08, -0.86, 0.0], [0.08, -0.86, 0.0], [0.08, -0.76, 0.0], [-0.08, -0.76, 0.0],
+          [-0.08, -0.86, 2.60], [0.08, -0.86, 2.60], [0.08, -0.76, 2.60], [-0.08, -0.76, 2.60],
+
+          [-0.08, 0.76, 0.0], [0.08, 0.76, 0.0], [0.08, 0.86, 0.0], [-0.08, 0.86, 0.0],
+          [-0.08, 0.76, 2.60], [0.08, 0.76, 2.60], [0.08, 0.86, 2.60], [-0.08, 0.86, 2.60]
+        ],
+        "faces": [
+          [0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7],[0,1,2,3],[4,5,6,7],
+          [8,9,13,12],[9,10,14,13],[10,11,15,14],[11,8,12,15],[8,9,10,11],[12,13,14,15],
+          [16,17,21,20],[17,18,22,21],[18,19,23,22],[19,16,20,23],[16,17,18,19],[20,21,22,23],
+          [24,25,29,28],[25,26,30,29],[26,27,31,30],[27,24,28,31],[24,25,26,27],[28,29,30,31]
+        ]
+      },
+      "notes": "4 posts at +X, -X, +Y, -Y positions. Each post is 0.16x0.16 cross-section, 2.6m tall. Reference has 8 posts but 4 gives good structure."
+    },
+    {
+      "step": 17,
+      "action": "material_assign",
+      "params": {
+        "object_name": "SupportPosts",
+        "material_name": "Wood"
+      }
+    },
+    {
+      "step": 18,
+      "action": "modifier_add",
+      "description": "Bevel support post edges",
+      "params": {
+        "object_name": "SupportPosts",
+        "type": "BEVEL",
+        "properties": {"width": 0.01, "segments": 1}
+      }
+    },
+
+    {
+      "step": 19,
+      "action": "material_create",
+      "description": "Create dirty metal material",
+      "params": {
+        "name": "DirtyMetal",
+        "base_color": [0.3, 0.3, 0.3, 1.0],
+        "roughness": 0.4,
+        "metallic": 0.85
+      }
+    },
+
+    {
+      "step": 20,
+      "action": "mesh_create_primitive",
+      "description": "Create wooden roller drum between posts",
+      "params": {
+        "type": "CYLINDER",
+        "name": "RollerDrum",
+        "vertices": 32,
+        "radius": 0.083,
+        "depth": 1.27,
+        "location": [0, 0, 1.48],
+        "rotation": [0, 1.5708, 0]
+      },
+      "notes": "Rotated 90 degrees to be horizontal (along X axis). Reference has barrel shape - wider middle than ends."
+    },
+    {
+      "step": 21,
+      "action": "mesh_edit_geometry",
+      "description": "Create barrel shape on roller drum",
+      "params": {
+        "object_name": "RollerDrum",
+        "steps": [
+          {"operation": "SCALE", "selection": {"type": "face", "position": "left"}, "scale_vector": [1, 0.4, 0.4]},
+          {"operation": "SCALE", "selection": {"type": "face", "position": "right"}, "scale_vector": [1, 0.4, 0.4]}
+        ]
+      },
+      "notes": "Scale end faces inward to create barrel profile (ends r=0.033 vs middle r=0.083)"
+    },
+    {
+      "step": 22,
+      "action": "material_assign",
+      "params": {
+        "object_name": "RollerDrum",
+        "material_name": "Wood"
+      }
+    },
+
+    {
+      "step": 23,
+      "action": "mesh_create_primitive",
+      "description": "Create crank axle shaft",
+      "params": {
+        "type": "CYLINDER",
+        "name": "CrankAxle",
+        "vertices": 16,
+        "radius": 0.015,
+        "depth": 1.90,
+        "location": [0, 0, 1.48],
+        "rotation": [0, 1.5708, 0]
+      },
+      "notes": "Thin metal shaft that extends beyond the support posts for crank handles"
+    },
+    {
+      "step": 24,
+      "action": "material_assign",
+      "params": {
+        "object_name": "CrankAxle",
+        "material_name": "DirtyMetal"
+      }
+    },
+
+    {
+      "step": 25,
+      "action": "mesh_create_custom",
+      "description": "Create L-shaped crank handle (right side)",
+      "params": {
+        "name": "CrankHandleR",
+        "vertices": [
+          [0.95, -0.015, 1.465], [0.95, 0.015, 1.465], [0.95, 0.015, 1.495], [0.95, -0.015, 1.495],
+          [0.95, -0.015, 1.25], [0.95, 0.015, 1.25], [0.95, 0.015, 1.28], [0.95, -0.015, 1.28],
+          [1.10, -0.015, 1.25], [1.10, 0.015, 1.25], [1.10, 0.015, 1.28], [1.10, -0.015, 1.28]
+        ],
+        "faces": [
+          [0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7],[0,1,2,3],[4,5,6,7],
+          [4,5,9,8],[5,6,10,9],[6,7,11,10],[7,4,8,11],[8,9,10,11]
+        ]
+      }
+    },
+    {
+      "step": 26,
+      "action": "material_assign",
+      "params": {
+        "object_name": "CrankHandleR",
+        "material_name": "Wood"
+      }
+    },
+
+    {
+      "step": 27,
+      "action": "object_duplicate",
+      "description": "Mirror crank handle to left side",
+      "params": {
+        "name": "CrankHandleR",
+        "new_name": "CrankHandleL"
+      }
+    },
+    {
+      "step": 28,
+      "action": "object_set_transform",
+      "description": "Mirror the left crank handle",
+      "params": {
+        "name": "CrankHandleL",
+        "scale": [-1, 1, 1]
+      }
+    },
+
+    {
+      "step": 29,
+      "action": "mesh_create_primitive",
+      "description": "Create rope cylinder (simplified - just a cylinder on the drum)",
+      "params": {
+        "type": "CYLINDER",
+        "name": "Rope",
+        "vertices": 32,
+        "radius": 0.15,
+        "depth": 0.30,
+        "location": [0, 0, 1.48],
+        "rotation": [0, 1.5708, 0]
+      }
+    },
+    {
+      "step": 30,
+      "action": "material_create",
+      "description": "Create rope material",
+      "params": {
+        "name": "Rope",
+        "base_color": [0.55, 0.45, 0.30, 1.0],
+        "roughness": 0.9,
+        "metallic": 0.0
+      }
+    },
+    {
+      "step": 31,
+      "action": "material_assign",
+      "params": {
+        "object_name": "Rope",
+        "material_name": "Rope"
+      }
+    },
+
+    {
+      "step": 32,
+      "action": "mesh_create_custom",
+      "description": "Create horizontal metal bars between posts",
+      "params": {
+        "name": "MetalBars",
+        "vertices": [
+          [-0.86, -0.02, 1.46], [-0.86, 0.02, 1.46], [-0.86, 0.02, 1.50], [-0.86, -0.02, 1.50],
+          [0.86, -0.02, 1.46], [0.86, 0.02, 1.46], [0.86, 0.02, 1.50], [0.86, -0.02, 1.50],
+
+          [-0.02, -0.86, 1.46], [0.02, -0.86, 1.46], [0.02, -0.86, 1.50], [-0.02, -0.86, 1.50],
+          [-0.02, 0.86, 1.46], [0.02, 0.86, 1.46], [0.02, 0.86, 1.50], [-0.02, 0.86, 1.50]
+        ],
+        "faces": [
+          [0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7],[0,1,2,3],[4,5,6,7],
+          [8,9,13,12],[9,10,14,13],[10,11,15,14],[11,8,12,15],[8,9,10,11],[12,13,14,15]
+        ]
+      }
+    },
+    {
+      "step": 33,
+      "action": "material_assign",
+      "params": {
+        "object_name": "MetalBars",
+        "material_name": "DirtyMetal"
+      }
+    },
+
+    {
+      "step": 34,
+      "action": "mesh_create_custom",
+      "description": "Create 4 roof rafters (tapered beams from base ring to peak)",
+      "params": {
+        "name": "RoofFrame",
+        "vertices": [
+          [-0.90, -0.05, 1.84], [-0.80, -0.05, 1.84], [-0.80, 0.05, 1.84], [-0.90, 0.05, 1.84],
+          [-0.60, -0.03, 2.65], [-0.52, -0.03, 2.65], [-0.52, 0.03, 2.65], [-0.60, 0.03, 2.65],
+
+          [0.80, -0.05, 1.84], [0.90, -0.05, 1.84], [0.90, 0.05, 1.84], [0.80, 0.05, 1.84],
+          [0.52, -0.03, 2.65], [0.60, -0.03, 2.65], [0.60, 0.03, 2.65], [0.52, 0.03, 2.65],
+
+          [-0.05, -0.90, 1.84], [0.05, -0.90, 1.84], [0.05, -0.80, 1.84], [-0.05, -0.80, 1.84],
+          [-0.03, -0.60, 2.65], [0.03, -0.60, 2.65], [0.03, -0.52, 2.65], [-0.03, -0.52, 2.65],
+
+          [-0.05, 0.80, 1.84], [0.05, 0.80, 1.84], [0.05, 0.90, 1.84], [-0.05, 0.90, 1.84],
+          [-0.03, 0.52, 2.65], [0.03, 0.52, 2.65], [0.03, 0.60, 2.65], [-0.03, 0.60, 2.65]
+        ],
+        "faces": [
+          [0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7],[0,1,2,3],[4,5,6,7],
+          [8,9,13,12],[9,10,14,13],[10,11,15,14],[11,8,12,15],[8,9,10,11],[12,13,14,15],
+          [16,17,21,20],[17,18,22,21],[18,19,23,22],[19,16,20,23],[16,17,18,19],[20,21,22,23],
+          [24,25,29,28],[25,26,30,29],[26,27,31,30],[27,24,28,31],[24,25,26,27],[28,29,30,31]
+        ]
+      },
+      "notes": "4 beams tapering inward from r=0.85 at base to r=0.56 at peak. Reference has 14 but 4 gives recognizable shape."
+    },
+    {
+      "step": 35,
+      "action": "material_create",
+      "description": "Create weathered wood for roof",
+      "params": {
+        "name": "WeatheredWood",
+        "base_color": [0.35, 0.25, 0.12, 1.0],
+        "roughness": 0.85,
+        "metallic": 0.0
+      }
+    },
+    {
+      "step": 36,
+      "action": "material_assign",
+      "params": {
+        "object_name": "RoofFrame",
+        "material_name": "Wood"
+      }
+    },
+
+    {
+      "step": 37,
+      "action": "mesh_create_custom",
+      "description": "Create roof cross beams (horizontal rings connecting rafters)",
+      "params": {
+        "name": "CrossBeams",
+        "vertices": [
+          [-0.92, -0.03, 1.82], [-0.92, 0.03, 1.82], [-0.92, 0.03, 1.86], [-0.92, -0.03, 1.86],
+          [-0.03, -0.92, 1.82], [0.03, -0.92, 1.82], [0.03, -0.92, 1.86], [-0.03, -0.92, 1.86],
+
+          [0.92, -0.03, 1.82], [0.92, 0.03, 1.82], [0.92, 0.03, 1.86], [0.92, -0.03, 1.86],
+          [0.03, 0.92, 1.82], [-0.03, 0.92, 1.82], [-0.03, 0.92, 1.86], [0.03, 0.92, 1.86],
+
+          [-0.62, -0.02, 2.62], [-0.62, 0.02, 2.62], [-0.62, 0.02, 2.66], [-0.62, -0.02, 2.66],
+          [-0.02, -0.62, 2.62], [0.02, -0.62, 2.62], [0.02, -0.62, 2.66], [-0.02, -0.62, 2.66],
+
+          [0.62, -0.02, 2.62], [0.62, 0.02, 2.62], [0.62, 0.02, 2.66], [0.62, -0.02, 2.66],
+          [0.02, 0.62, 2.62], [-0.02, 0.62, 2.62], [-0.02, 0.62, 2.66], [0.02, 0.62, 2.66]
+        ],
+        "faces": [
+          [0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7],
+          [4,5,9,8],[5,6,10,9],[6,7,11,10],[7,4,8,11],
+          [8,9,13,12],[9,10,14,13],[10,11,15,14],[11,8,12,15],
+          [12,13,1,0],[13,14,2,1],[14,15,3,2],[15,12,0,3],
+
+          [16,17,21,20],[17,18,22,21],[18,19,23,22],[19,16,20,23],
+          [20,21,25,24],[21,22,26,25],[22,23,27,26],[23,20,24,27],
+          [24,25,29,28],[25,26,30,29],[26,27,31,30],[27,24,28,31],
+          [28,29,17,16],[29,30,18,17],[30,31,19,18],[31,28,16,19]
+        ]
+      },
+      "notes": "Two horizontal square rings connecting the 4 rafters - one at base (Z=1.84) and one at top (Z=2.64)"
+    },
+    {
+      "step": 38,
+      "action": "material_assign",
+      "params": {
+        "object_name": "CrossBeams",
+        "material_name": "WeatheredWood"
+      }
+    },
+
+    {
+      "step": 39,
+      "action": "mesh_create_primitive",
+      "description": "Create simplified roof surface (cone shape for shingles)",
+      "params": {
+        "type": "CONE",
+        "name": "RoofShingles",
+        "vertices": 32,
+        "radius1": 1.20,
+        "radius2": 0.05,
+        "depth": 0.85,
+        "location": [0, 0, 2.24]
+      },
+      "notes": "Simplified as cone. Reference has 124 individual shingles - for training we show the simplified approach. Full detail version would use array of small planes."
+    },
+    {
+      "step": 40,
+      "action": "mesh_edit_geometry",
+      "description": "Delete bottom face of roof cone (open bottom)",
+      "params": {
+        "object_name": "RoofShingles",
+        "operation": "DELETE",
+        "selection": {"type": "face", "position": "bottom"},
+        "delete_type": "FACES"
+      }
+    },
+    {
+      "step": 41,
+      "action": "material_assign",
+      "params": {
+        "object_name": "RoofShingles",
+        "material_name": "WeatheredWood"
+      }
+    },
+    {
+      "step": 42,
+      "action": "modifier_add",
+      "description": "Solidify roof for thickness",
+      "params": {
+        "object_name": "RoofShingles",
+        "type": "SOLIDIFY",
+        "properties": {"thickness": 0.03}
+      }
+    },
+
+    {
+      "step": 43,
+      "action": "object_parent",
+      "description": "Parent all objects to empty for organization",
+      "params": {
+        "parent_object": "WellEmpty",
+        "children": ["WellBase", "WallLip", "WellLid", "SupportPosts", "MetalBars", "RollerDrum", "CrankAxle", "CrankHandleR", "CrankHandleL", "Rope", "RoofFrame", "CrossBeams", "RoofShingles"]
+      },
+      "notes": "This is a conceptual step - actual tool does one parent call per child"
+    },
+
+    {
+      "step": 44,
+      "action": "viewport_set_camera",
+      "description": "Set camera for final view",
+      "params": {
+        "location": [2.5, -2.5, 2.0],
+        "target": [0, 0, 1.2]
+      }
+    },
+    {
+      "step": 45,
+      "action": "viewport_screenshot",
+      "description": "Capture final result for validation"
+    }
+  ],
+
+  "validation": {
+    "expected_objects": 14,
+    "expected_materials": 5,
+    "key_dimensions": {
+      "overall_height": {"target": 2.75, "tolerance": 0.3},
+      "base_radius": {"target": 0.75, "tolerance": 0.1},
+      "base_height": {"target": 0.80, "tolerance": 0.1},
+      "roof_peak_height": {"target": 2.65, "tolerance": 0.2}
+    },
+    "required_parts": ["base_wall", "support_posts", "roof", "roller_mechanism"]
+  }
+}
