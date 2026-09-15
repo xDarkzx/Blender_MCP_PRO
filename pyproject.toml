@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "blendermcp-pro"
-version = "0.1.0"
+version = "0.1.1"
 description = "MCP server for AI-driven 3D modeling in Blender"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 dependencies = [
-    "mcp[cli]>=1.3.0",
+    "mcp[cli]>=1.3.0,<2.0.0",
 ]
 
 [project.optional-dependencies]
