@@ -2,6 +2,7 @@
 
 try:
     import bpy
+
     from .shared.constants import DEFAULT_HOST, DEFAULT_PORT
 
     class BlenderMCPPreferences(bpy.types.AddonPreferences):

@@ -23,11 +23,11 @@ def register():
     if _registered:
         return
 
-    from .preferences import BlenderMCPPreferences
+    import bpy
+
     from . import panels
     from .handlers import register_all_handlers
-
-    import bpy
+    from .preferences import BlenderMCPPreferences
     bpy.utils.register_class(BlenderMCPPreferences)
     panels.register()
     register_all_handlers()
@@ -47,10 +47,10 @@ def unregister():
     if not _registered:
         return
 
-    from .connection import stop_server
-    from .preferences import BlenderMCPPreferences
     from . import panels
+    from .connection import stop_server
     from .handlers import unregister_all_handlers
+    from .preferences import BlenderMCPPreferences
 
     stop_server()
     unregister_all_handlers()

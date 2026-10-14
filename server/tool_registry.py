@@ -2,7 +2,6 @@
 
 import importlib
 import logging
-from typing import Callable
 
 logger = logging.getLogger("blendermcp.registry")
 

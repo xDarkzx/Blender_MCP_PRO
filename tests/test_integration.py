@@ -8,16 +8,15 @@ Usage:
 This sends real commands to Blender and prints the results.
 """
 
+import json
+import os
 import socket
 import sys
-import os
-import json
-import time
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from shared.protocol import send_message_sync, recv_message_sync, make_request
 from shared.constants import DEFAULT_HOST, DEFAULT_PORT
+from shared.protocol import make_request, recv_message_sync, send_message_sync
 
 
 def send_command(sock, method: str, params: dict = None) -> dict:

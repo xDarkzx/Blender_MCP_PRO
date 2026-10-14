@@ -1,21 +1,22 @@
 """Tests for the validation module."""
 
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from shared.error_codes import ErrorCode, BlenderMCPError
 from addon.validation import (
-    validate_params,
-    validate_object_name,
-    validate_vector3,
     validate_color,
     validate_export_path,
-    validate_vertices,
     validate_faces,
+    validate_object_name,
+    validate_params,
+    validate_vector3,
+    validate_vertices,
 )
+from shared.error_codes import BlenderMCPError, ErrorCode
 
 
 class TestValidateParams:

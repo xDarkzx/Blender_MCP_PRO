@@ -3,8 +3,8 @@
 Usage: python install_addon.py
 """
 
-import shutil
 import os
+import shutil
 import sys
 
 # Source directories

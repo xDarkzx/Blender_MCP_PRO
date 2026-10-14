@@ -1,4 +1,5 @@
 from mcp.server.fastmcp import FastMCP
+
 from server.blender_client import BlenderClient
 
 
@@ -286,7 +287,7 @@ def register_tools(mcp: FastMCP, client: BlenderClient) -> int:
             "auto_smooth_angle": auto_smooth_angle,
         }
 
-        result = await client.send_command("mesh.set_smooth_shading", params)
+        await client.send_command("mesh.set_smooth_shading", params)
         mode = "smooth" if smooth else "flat"
         return f"Set '{object_name}' shading to {mode} (auto smooth angle: {auto_smooth_angle}°)" + _screenshot_hint(client)
 
@@ -341,7 +342,7 @@ def register_tools(mcp: FastMCP, client: BlenderClient) -> int:
             "origin_type": origin_type,
         }
 
-        result = await client.send_command("mesh.set_origin", params)
+        await client.send_command("mesh.set_origin", params)
         return f"Set origin of '{object_name}' using {origin_type}" + _screenshot_hint(client)
 
     @mcp.tool()
@@ -381,7 +382,7 @@ def register_tools(mcp: FastMCP, client: BlenderClient) -> int:
         if bbox:
             dims = bbox.get("dimensions", [0,0,0])
             center = bbox.get("center", [0,0,0])
-            lines.append(f"\nBOUNDING BOX:")
+            lines.append("\nBOUNDING BOX:")
             lines.append(f"  Dimensions: {dims[0]:.3f} x {dims[1]:.3f} x {dims[2]:.3f}")
             lines.append(f"  Center: ({center[0]:.3f}, {center[1]:.3f}, {center[2]:.3f})")
             lines.append(f"  Min: ({bbox['min'][0]:.3f}, {bbox['min'][1]:.3f}, {bbox['min'][2]:.3f})")
@@ -390,14 +391,14 @@ def register_tools(mcp: FastMCP, client: BlenderClient) -> int:
         # Symmetry
         sym = result.get("symmetry", {})
         if sym:
-            lines.append(f"\nSYMMETRY:")
+            lines.append("\nSYMMETRY:")
             lines.append(f"  X-axis: {'YES' if sym.get('x_symmetric') else 'no'} ({sym.get('x_match_ratio', 0):.1%})")
             lines.append(f"  Y-axis: {'YES' if sym.get('y_symmetric') else 'no'} ({sym.get('y_match_ratio', 0):.1%})")
 
         # Normals
         normals = result.get("face_normal_distribution", {})
         if normals:
-            lines.append(f"\nFACE NORMALS:")
+            lines.append("\nFACE NORMALS:")
             for direction, count in normals.items():
                 if count > 0:
                     lines.append(f"  {direction}: {count}")

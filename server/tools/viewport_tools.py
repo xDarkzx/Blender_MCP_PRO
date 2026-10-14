@@ -3,8 +3,9 @@ import os
 import tempfile
 
 from mcp.server.fastmcp import FastMCP
-from server.blender_client import BlenderClient
+
 from server import auto_screenshot
+from server.blender_client import BlenderClient
 
 
 def _screenshot_hint(client: BlenderClient) -> str:

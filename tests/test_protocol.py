@@ -1,21 +1,21 @@
 """Tests for the wire protocol module."""
 
-import struct
 import json
+import struct
+
 import pytest
 
+from shared.error_codes import BlenderMCPError, ErrorCode
 from shared.protocol import (
-    encode_message,
     decode_length_prefix,
     decode_payload,
-    make_request,
-    make_response,
+    encode_message,
+    is_heartbeat,
     make_error_response,
     make_heartbeat,
-    is_heartbeat,
+    make_request,
+    make_response,
 )
-from shared.error_codes import ErrorCode, BlenderMCPError
-from shared.constants import LENGTH_PREFIX_BYTES
 
 
 class TestEncodeMessage:
@@ -35,6 +35,7 @@ class TestEncodeMessage:
         result = encode_message(data)
         payload_len = struct.unpack(">I", result[:4])[0]
         payload = result[4:].decode("utf-8")
+        assert payload_len == len(result) - 4
         assert "\u00e9" in payload
 
     def test_roundtrip(self):

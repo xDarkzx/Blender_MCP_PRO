@@ -3,6 +3,7 @@
 from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
+
 from server.blender_client import BlenderClient
 
 

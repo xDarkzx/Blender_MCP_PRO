@@ -10,8 +10,8 @@ import struct
 import uuid
 from typing import Any
 
-from .constants import LENGTH_PREFIX_BYTES, BYTE_ORDER, MAX_MESSAGE_SIZE
-from .error_codes import ErrorCode, BlenderMCPError
+from .constants import LENGTH_PREFIX_BYTES, MAX_MESSAGE_SIZE
+from .error_codes import BlenderMCPError, ErrorCode
 
 
 def encode_message(data: dict) -> bytes:

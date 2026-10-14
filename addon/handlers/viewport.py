@@ -1,9 +1,7 @@
 """Viewport handlers for BlenderMCP addon."""
 
-import base64
-import tempfile
 import os
-import math
+import tempfile
 
 try:
     import bpy
@@ -12,14 +10,14 @@ except ImportError:
 
 try:
     from ..dispatcher import register_handler
+    from ..shared.error_codes import BlenderMCPError, ErrorCode
     from ..validation import validate_vector3
-    from ..shared.error_codes import ErrorCode, BlenderMCPError
 except ImportError:
     import sys
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
     from addon.dispatcher import register_handler
     from addon.validation import validate_vector3
-    from shared.error_codes import ErrorCode, BlenderMCPError
+    from shared.error_codes import BlenderMCPError, ErrorCode
 
 
 def handle_viewport_screenshot(params: dict) -> dict:
