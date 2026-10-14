@@ -2,6 +2,7 @@
 
 try:
     import bpy
+
     from .connection import get_server, start_server, stop_server
     from .preferences import get_preferences
     from .shared.constants import DEFAULT_HOST, DEFAULT_PORT

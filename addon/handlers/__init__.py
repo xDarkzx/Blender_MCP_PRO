@@ -6,13 +6,7 @@ Each module registers its handlers with the dispatcher.
 
 def register_all_handlers():
     """Register all Phase 1 handlers."""
-    from . import scene
-    from . import mesh
-    from . import object
-    from . import material
-    from . import modifier
-    from . import viewport
-    from . import selection
+    from . import material, mesh, modifier, object, scene, selection, viewport
 
     scene.register()
     mesh.register()

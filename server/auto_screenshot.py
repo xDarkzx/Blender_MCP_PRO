@@ -6,11 +6,10 @@ giving the AI visual feedback on every change.
 Screenshots are saved in per-session directories for easy cleanup.
 """
 
+import logging
 import os
 import shutil
-import tempfile
 import time
-import logging
 
 logger = logging.getLogger("blendermcp.autoscreenshot")
 

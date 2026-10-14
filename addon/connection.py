@@ -5,9 +5,9 @@ Uses Blender's timer system to bridge between the socket thread
 and Blender's main thread (bpy operations must run on main thread).
 """
 
+import queue
 import socket
 import threading
-import queue
 import time
 
 try:
@@ -16,23 +16,28 @@ except ImportError:
     bpy = None  # Allow importing for tests
 
 try:
-    from .shared.constants import DEFAULT_HOST, DEFAULT_PORT, HEARTBEAT_INTERVAL
-    from .shared.protocol import (
-        recv_message_sync, send_message_sync,
-        make_response, is_heartbeat,
-    )
-    from .shared.error_codes import ErrorCode, BlenderMCPError
     from .dispatcher import dispatch
-except ImportError:
-    import sys, os
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-    from shared.constants import DEFAULT_HOST, DEFAULT_PORT, HEARTBEAT_INTERVAL
-    from shared.protocol import (
-        recv_message_sync, send_message_sync,
-        make_response, is_heartbeat,
+    from .shared.constants import DEFAULT_HOST, DEFAULT_PORT, HEARTBEAT_INTERVAL
+    from .shared.error_codes import BlenderMCPError
+    from .shared.protocol import (
+        is_heartbeat,
+        make_response,
+        recv_message_sync,
+        send_message_sync,
     )
-    from shared.error_codes import ErrorCode, BlenderMCPError
+except ImportError:
+    import os
+    import sys
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
     from addon.dispatcher import dispatch
+    from shared.constants import DEFAULT_HOST, DEFAULT_PORT, HEARTBEAT_INTERVAL
+    from shared.error_codes import BlenderMCPError
+    from shared.protocol import (
+        is_heartbeat,
+        make_response,
+        recv_message_sync,
+        send_message_sync,
+    )
 
 
 class BlenderTCPServer:
@@ -126,7 +131,7 @@ class BlenderTCPServer:
                 self._server_socket.bind((self.host, self.port))
                 self._server_socket.listen(1)
                 break
-            except OSError as e:
+            except OSError:
                 if self._running:
                     time.sleep(1.0)
                     continue

@@ -10,19 +10,27 @@ Features:
 
 import asyncio
 import json
+import logging
 import struct
 import uuid
-import logging
 from typing import Any
 
 from shared.constants import (
-    DEFAULT_HOST, DEFAULT_PORT, LENGTH_PREFIX_BYTES, MAX_MESSAGE_SIZE,
-    HEARTBEAT_INTERVAL, HEARTBEAT_MISSED_LIMIT,
-    RECONNECT_BASE_DELAY, RECONNECT_MAX_DELAY, RECONNECT_MAX_ATTEMPTS,
-    RECONNECT_BACKOFF_FACTOR, TIMEOUT_DEFAULT, TIMEOUT_MAP,
+    DEFAULT_HOST,
+    DEFAULT_PORT,
+    HEARTBEAT_INTERVAL,
+    HEARTBEAT_MISSED_LIMIT,
+    LENGTH_PREFIX_BYTES,
+    MAX_MESSAGE_SIZE,
+    RECONNECT_BACKOFF_FACTOR,
+    RECONNECT_BASE_DELAY,
+    RECONNECT_MAX_ATTEMPTS,
+    RECONNECT_MAX_DELAY,
+    TIMEOUT_DEFAULT,
+    TIMEOUT_MAP,
 )
-from shared.protocol import make_request, make_heartbeat
-from shared.error_codes import ErrorCode, BlenderMCPError
+from shared.error_codes import BlenderMCPError, ErrorCode
+from shared.protocol import make_heartbeat, make_request
 
 logger = logging.getLogger("blendermcp.client")
 
@@ -181,6 +189,7 @@ class BlenderClient:
         """Take an auto-screenshot if enabled. Non-blocking - failures are silently ignored."""
         import base64 as b64
         import os
+
         from server import auto_screenshot
 
         if not auto_screenshot.is_enabled():

@@ -7,8 +7,8 @@ Usage: python build_addon.py
 Output: blendermcp_addon.zip
 """
 
-import zipfile
 import os
+import zipfile
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUTPUT = os.path.join(ROOT, "blendermcp_addon.zip")
@@ -50,8 +50,8 @@ def build():
         for name in sorted(zf.namelist()):
             print(f"  {name}")
 
-    print(f"\nInstall in Blender 5.x:")
-    print(f"  Edit -> Preferences -> Get Extensions -> dropdown arrow -> Install from Disk")
+    print("\nInstall in Blender 5.x:")
+    print("  Edit -> Preferences -> Get Extensions -> dropdown arrow -> Install from Disk")
     print(f"  Select: {OUTPUT}")
 
 

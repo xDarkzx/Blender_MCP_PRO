@@ -12,14 +12,15 @@ except ImportError:
 
 try:
     from ..dispatcher import register_handler
-    from ..validation import validate_object_name, validate_color
-    from ..shared.error_codes import ErrorCode, BlenderMCPError
+    from ..shared.error_codes import BlenderMCPError, ErrorCode
+    from ..validation import validate_color, validate_object_name
 except ImportError:
-    import sys, os
+    import os
+    import sys
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
     from addon.dispatcher import register_handler
-    from addon.validation import validate_object_name, validate_color
-    from shared.error_codes import ErrorCode, BlenderMCPError
+    from addon.validation import validate_color, validate_object_name
+    from shared.error_codes import BlenderMCPError, ErrorCode
 
 
 def _get_principled_bsdf(mat):

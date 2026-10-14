@@ -8,13 +8,14 @@ import traceback
 from typing import Callable
 
 try:
-    from .shared.error_codes import ErrorCode, BlenderMCPError
-    from .shared.protocol import make_response, make_error_response
+    from .shared.error_codes import BlenderMCPError, ErrorCode
+    from .shared.protocol import make_error_response, make_response
 except ImportError:
-    import sys, os
+    import os
+    import sys
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-    from shared.error_codes import ErrorCode, BlenderMCPError
-    from shared.protocol import make_response, make_error_response
+    from shared.error_codes import BlenderMCPError, ErrorCode
+    from shared.protocol import make_error_response, make_response
 
 
 # Handler function type: (params: dict) -> dict

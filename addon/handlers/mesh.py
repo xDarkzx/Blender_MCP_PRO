@@ -8,36 +8,34 @@ get_geometry, set_smooth_shading, separate, join, and set_origin.
 import math
 
 try:
-    import bpy
     import bmesh
+    import bpy
 except ImportError:
     bpy = None
     bmesh = None
 
 try:
     from ..dispatcher import register_handler
+    from ..shared.error_codes import BlenderMCPError, ErrorCode
     from ..validation import (
-        validate_params,
-        validate_object_name,
-        validate_vertices,
         validate_faces,
+        validate_object_name,
         validate_vector3,
+        validate_vertices,
     )
-    from ..shared.error_codes import ErrorCode, BlenderMCPError
 except ImportError:
-    import sys
     import os
+    import sys
 
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
     from addon.dispatcher import register_handler
     from addon.validation import (
-        validate_params,
-        validate_object_name,
-        validate_vertices,
         validate_faces,
+        validate_object_name,
         validate_vector3,
+        validate_vertices,
     )
-    from shared.error_codes import ErrorCode, BlenderMCPError
+    from shared.error_codes import BlenderMCPError, ErrorCode
 
 
 # ---------------------------------------------------------------------------

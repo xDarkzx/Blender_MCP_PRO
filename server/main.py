@@ -4,10 +4,9 @@ Uses FastMCP with stdio transport for Claude Desktop integration.
 Connects to the Blender addon via TCP.
 """
 
-import asyncio
 import logging
-import sys
 import os
+import sys
 
 # Add project root to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

@@ -3,7 +3,6 @@
 Every parameter is validated before any bpy call. No exec/eval anywhere.
 """
 
-import math
 import os
 from typing import Any
 
@@ -11,19 +10,23 @@ from typing import Any
 # but shared/ is also bundled. We handle both cases.
 try:
     from .shared.constants import (
-        MAX_VERTICES, MAX_OBJECT_NAME_LENGTH, MAX_BATCH_SIZE,
         ALLOWED_EXPORT_EXTENSIONS,
+        MAX_BATCH_SIZE,
+        MAX_OBJECT_NAME_LENGTH,
+        MAX_VERTICES,
     )
-    from .shared.error_codes import ErrorCode, BlenderMCPError
+    from .shared.error_codes import BlenderMCPError, ErrorCode
 except ImportError:
     import sys
     # Allow direct import for testing
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
     from shared.constants import (
-        MAX_VERTICES, MAX_OBJECT_NAME_LENGTH, MAX_BATCH_SIZE,
         ALLOWED_EXPORT_EXTENSIONS,
+        MAX_BATCH_SIZE,
+        MAX_OBJECT_NAME_LENGTH,
+        MAX_VERTICES,
     )
-    from shared.error_codes import ErrorCode, BlenderMCPError
+    from shared.error_codes import BlenderMCPError, ErrorCode
 
 
 def validate_params(params: dict, schema: dict) -> dict:

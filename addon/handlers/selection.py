@@ -9,12 +9,13 @@ except ImportError:
 
 try:
     from ..dispatcher import register_handler
-    from ..shared.error_codes import ErrorCode, BlenderMCPError
+    from ..shared.error_codes import BlenderMCPError, ErrorCode
 except ImportError:
-    import sys, os
+    import os
+    import sys
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
     from addon.dispatcher import register_handler
-    from shared.error_codes import ErrorCode, BlenderMCPError
+    from shared.error_codes import BlenderMCPError, ErrorCode
 
 VALID_ACTIONS = {"SELECT", "DESELECT", "TOGGLE", "SET"}
 VALID_TYPES = {"MESH", "CAMERA", "LIGHT", "EMPTY", "ARMATURE", "CURVE", "SURFACE", "FONT", "LATTICE"}
